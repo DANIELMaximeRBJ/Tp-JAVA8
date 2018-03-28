@@ -14,14 +14,25 @@ public class Function_02_Test {
     //  tag::buildAccount[]
     // TODO Compléter la fonction buildAccount
     // TODO la fonction possède 2 paramètres en entrée : une personne et un solde
-    BiFunction<Person, Integer, Account> buildAccount = null;
+    BiFunction<Person, Integer, Account> buildAccount = (p,i) -> {
+    	Account ac = new Account();
+    	ac.setOwner(p);
+    	ac.setBalance(i);
+    	return ac;
+
+    };
     //  end::buildAccount[]
 
     @Test
     public void test_build_account() throws Exception {
 
+    	Person person = new Person();
+    	person.setFirstname("John");
+    	person.setLastname("France");
+    	person.setAge(80);
+    	person.setPassword("pass");
         // TODO invoquer la fonction buildAccount pour que le test soit passant
-        Account account = null;
+        Account account = buildAccount.apply(person, 500);
 
         assert account.getBalance().equals(500);
         assert account.getOwner().getFirstname().equals("John");
