@@ -5,6 +5,7 @@ import java8.data.Data;
 import java8.data.Person;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,15 +15,22 @@ import java.util.List;
 public class Lambda_02_Test {
 
     // tag::PersonToAccountMapper[]
-    interface PersonToAccountMapper {
-        Account map(Person p);
+    interface PersonToAccountMapper<T> {
+        T map(Person p);
     }
     // end::PersonToAccountMapper[]
 
     // tag::map[]
-    private List<Account> map(List<Person> personList, PersonToAccountMapper mapper) {
+    private<T> List<T> map(List<Person> personList, PersonToAccountMapper<T> mapper) {
         // TODO implémenter la méthode pour transformer une liste de personnes en liste de comptes
-        return null;
+    	List<T> lA = new ArrayList<>();
+    	
+    	for(Person p : personList)
+    	{
+    		lA.add(mapper.map(p));
+    	}
+        return lA;
+    	
     }
     // end::map[]
 
@@ -35,7 +43,13 @@ public class Lambda_02_Test {
 
         // TODO transformer la liste de personnes en liste de comptes
         // TODO tous les objets comptes ont un solde à 100 par défaut
-        List<Account> result = map(personList, null);
+        
+        List<Account> result = map(personList, p-> {
+        	Account a = new Account();
+        	a.setOwner(p);
+        	a.setBalance(100);
+        	return a;
+        });
 
         assert result.size() == personList.size();
         for (Account account : result) {
@@ -52,7 +66,7 @@ public class Lambda_02_Test {
         List<Person> personList = Data.buildPersonList(100);
 
         // TODO transformer la liste de personnes en liste de prénoms
-        List<String> result = null;
+        List<String> result = map(personList, p-> p.getFirstname());;
 
         assert result.size() == personList.size();
         for (String firstname : result) {
